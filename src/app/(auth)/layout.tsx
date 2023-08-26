@@ -7,9 +7,9 @@ export const metadata: Metadata = {
 
 function Layout({children}: PropsWithChildren) {
   return (
-    <body className='w-full h-[100vh] flex items-center justify-center'>
+    <div className='w-full h-[100vh] flex items-center justify-center'>
       {children}
-    </body>
+    </div>
    )
 }
 

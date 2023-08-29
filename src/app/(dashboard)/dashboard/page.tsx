@@ -1,19 +1,19 @@
 'use client'
 
-import { Navigation } from '@/components/layout/navigation'
 import { useStoreModal } from '@/hooks/use-store-modal'
 import { useEffect } from 'react'
 
 function Page() {
   const { onOpen, isOpen } = useStoreModal()
 
+  // if user doesn't have store, pop a modal form.
   useEffect(() => {
     if (!isOpen) onOpen()
   })
 
   return (
     <>
-      <Navigation />
+      <h1>default dashboard</h1>
     </>
   )
 }

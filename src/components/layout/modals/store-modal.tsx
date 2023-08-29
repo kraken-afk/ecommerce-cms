@@ -1,20 +1,23 @@
 'use client'
 
+import * as z from 'zod'
 import { Modal } from '@/components/ui/modal'
 import { useStoreModal } from '@/hooks/use-store-modal'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
-import * as z from 'zod'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
+import { useState } from 'react'
+import toast from 'react-hot-toast'
 
 const formSchema = z.object({
   name: z.string().min(1)
 })
 
 export function StoreModal() {
-  const { isOpen, onClose, onOpen } = useStoreModal()
+  const { isOpen, onClose } = useStoreModal()
+  const [isLoading, setIsLoading] = useState(false)
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema as any),
@@ -23,7 +26,22 @@ export function StoreModal() {
     }
   })
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values)
+    try {
+      setIsLoading(true)
+
+      const response = await (await fetch('/api/stores', {
+        method: "POST",
+        body: JSON.stringify(values)
+      })).json()
+
+
+      toast.success('Store created.')
+    } catch (err) {
+      console.error(err)
+      toast.error('Something went error')
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
@@ -43,15 +61,15 @@ export function StoreModal() {
                 <FormItem>
                   <FormLabel>Name</FormLabel>
                   <FormControl>
-                    <Input placeholder='Ecommerce...' {...field}/>
+                    <Input placeholder='Ecommerce...' {...field} disabled={isLoading}/>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
             <div className='pt-6 space-x-2 flex items-center justify-end'>
-              <Button type='button' onClick={onClose} variant={'outline'}>Cancel</Button>
-              <Button type='submit'>Save</Button>
+              <Button type='button' onClick={onClose} variant={'outline'} disabled={isLoading}>Cancel</Button>
+              <Button type='submit' disabled={isLoading}>Save</Button>
             </div>
           </form>
         </Form>

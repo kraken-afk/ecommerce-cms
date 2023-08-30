@@ -9,6 +9,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { useState } from 'react'
+import { Store } from '@prisma/client'
 import toast from 'react-hot-toast'
 
 const formSchema = z.object({
@@ -32,10 +33,11 @@ export function StoreModal() {
       const response = await (await fetch('/api/stores', {
         method: "POST",
         body: JSON.stringify(values)
-      })).json()
+      })).json() as Store
 
 
       toast.success('Store created.')
+      setTimeout(() => window.location.assign(`/dashboard/${response.id}`), 800)
     } catch (err) {
       console.error(err)
       toast.error('Something went error')

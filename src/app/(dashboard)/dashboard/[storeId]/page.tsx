@@ -1,20 +1,31 @@
-'use client'
-
 import { NotFound } from '@/components/exceptions/not-found'
 import { Navigation } from '@/components/layout/navigation'
-import { StoreInstanceContext } from '@/context/store-instance-context'
-import { useContext } from 'react'
+import prismadb from '@/lib/prismadb'
+import { auth } from '@clerk/nextjs'
+import { redirect } from 'next/navigation'
 
-export default function Page() {
-  const store = useContext(StoreInstanceContext)
+type Props = {
+   params: { storeId: string }
+}
 
-  if (!store) return <NotFound />
+export default async function Page({ params }: Props) {
+   const { userId } = auth()
+   if (!userId) redirect('/sign-in')
 
- return (
-  <>
-     <Navigation />
-     <p>{store.id}</p>
-     <p>{store.name}</p>
-  </>
- )
+   const store = await prismadb.store.findFirst({
+      where: {
+         id: params.storeId,
+         userId
+      }
+   })
+
+   if (!store) return <NotFound />
+
+   return (
+      <>
+         <Navigation />
+         <p>{store.id}</p>
+         <p>{store.name}</p>
+      </>
+   )
 }

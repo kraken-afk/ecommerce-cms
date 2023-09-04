@@ -3,7 +3,7 @@
 import * as z from 'zod'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { RotateCcw, Trash } from 'lucide-react'
+import { Trash } from 'lucide-react'
 import { Store } from '@prisma/client'
 import { Heading } from '@/components/ui/heading'
 import { Button } from '@/components/ui/button'
@@ -11,11 +11,12 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Separator } from '@/components/ui/separator'
 import { Form, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { cn } from '@/lib/utils'
 import { formSchema } from '@/lib/types'
 import { useParams, useRouter } from 'next/navigation'
-import styles from '@/styles/animate.module.css'
+import { AlertModal } from '@/components/layout/alert-modal'
+import { ApiAlerts } from '@/components/ui/api-alert'
 import toast from 'react-hot-toast'
+import { useOrigin } from '@/hooks/use-origin'
 
 type Props = {
   initialData: Store
@@ -28,6 +29,7 @@ export function SettingForm({ initialData }: Props) {
   const [loading, setLoading] = useState(false)
   const params = useParams()
   const router = useRouter()
+  const origin = useOrigin()
   const form = useForm<SettingsFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: initialData
@@ -50,9 +52,29 @@ export function SettingForm({ initialData }: Props) {
       setLoading(false);
     }
   }
+  const onDelete = async () => {
+    try {
+      setLoading(true)
+      await fetch(`/api/stores/${params?.storeId}`, {
+        method: 'DELETE',
+      })
+      toast.success('Store deleted')
+      window.location.assign('/dashboard')
+    } catch (error) {
+      toast.error('Make sure you remove all products and categories first.')
+    } finally {
+      setLoading(false)
+    }
+  }
 
   return (
     <>
+      <AlertModal
+        isOpen={open}
+        onClose={() => setOpen(false)}
+        onConfirm={onDelete}
+        loading={loading}
+      />
       <div className='flex items-center justify-between'>
         <Heading
           title='Settings'
@@ -61,7 +83,7 @@ export function SettingForm({ initialData }: Props) {
         <Button
           variant={'destructive'}
           size={'sm'}
-          onClick={() => { }}
+          onClick={() => setOpen(true)}
         >
           <Trash className='w-4 h-4' />
         </Button>
@@ -83,14 +105,16 @@ export function SettingForm({ initialData }: Props) {
             />
           </div>
         <Button disabled={loading} type='submit' className='mt-6 w-32 h-10'>
-          {
-            loading
-              ? <RotateCcw size={'1rem'} className={cn(styles.rotate_animate, 'block')} />
-              : 'Save changes'
-          }
+          Save changes
         </Button>
         </form>
       </Form>
+      <Separator />
+      <ApiAlerts
+        title='NEXT_PUBLIC_API_URL'
+        description={`${origin}/api/${params.storeId}`}
+        variant='public'
+      />
     </>
   )
 }

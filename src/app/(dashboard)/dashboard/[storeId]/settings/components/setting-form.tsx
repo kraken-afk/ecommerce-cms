@@ -110,11 +110,6 @@ export function SettingForm({ initialData }: Props) {
         </form>
       </Form>
       <Separator />
-      <ApiAlerts
-        title='NEXT_PUBLIC_API_URL'
-        description={`${origin}/api/${params.storeId}`}
-        variant='public'
-      />
     </>
   )
 }

@@ -1,8 +1,9 @@
 import { auth } from '@clerk/nextjs'
 import { redirect } from 'next/navigation'
 import { PropsWithChildren } from 'react'
-import prismadb from '@/lib/prismadb'
 import { headers } from 'next/headers'
+import { Navigation } from '@/components/layout/navigation'
+import prismadb from '@/lib/prismadb'
 
 export default async function Layout({ children }: PropsWithChildren) {
   const pathname = headers().get('x-invoke-path') || '';
@@ -14,5 +15,10 @@ export default async function Layout({ children }: PropsWithChildren) {
   const store = await prismadb.store.findFirst({ where: { userId } })
   if (store && pathname === '/dashboard') redirect(`/dashboard/${store.id}`)
 
-  return <>{children}</>
+  return (
+  <>
+    <Navigation />
+    {children}
+  </>
+  )
 }

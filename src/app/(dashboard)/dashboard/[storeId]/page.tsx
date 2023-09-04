@@ -1,5 +1,4 @@
 import { NotFound } from '@/components/exceptions/not-found'
-import { Navigation } from '@/components/layout/navigation'
 import prismadb from '@/lib/prismadb'
 import { auth } from '@clerk/nextjs'
 import { redirect } from 'next/navigation'
@@ -23,7 +22,6 @@ export default async function Page({ params }: Props) {
 
    return (
       <>
-         <Navigation />
          <p>{store.id}</p>
          <p>{store.name}</p>
       </>

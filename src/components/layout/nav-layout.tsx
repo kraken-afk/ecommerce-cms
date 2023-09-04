@@ -12,7 +12,7 @@ export function NavLayout(props: Props) {
   const params = useParams()
   const routes = [
     {
-      href: `/${params.storeId}/settings`,
+      href: `/dashboard/${params.storeId}/settings`,
       label: 'settings',
       active: pathname === `/${params.storeId}/settings`
     }

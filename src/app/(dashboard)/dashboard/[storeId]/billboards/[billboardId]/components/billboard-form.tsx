@@ -64,7 +64,10 @@ export function BillboardForm({ initialData }: Props) {
         })
 
       toast.success(toastMessage)
-      setTimeout(() => router.refresh(), 2000)
+      setTimeout(() => {
+        router.refresh()
+        window.location.assign(`/dashboard/${params.storeId}/billboards`)
+      }, 1000)
     } catch (error) {
       toast.error('Something went error')
     } finally {
@@ -74,11 +77,12 @@ export function BillboardForm({ initialData }: Props) {
   const onDelete = async () => {
     try {
       setLoading(true)
-      await fetch(`/api/stores/${params?.storeId}/billboards`, {
+      const res = await fetch(`/api/stores/${params?.storeId}/billboards/${params.billboardId}`, {
         method: 'DELETE',
       })
+      console.log(res)
       toast.success('Store deleted')
-      window.location.assign('/dashboard')
+      window.location.assign(`/dashboard/${params.storeId}/billboards`)
     } catch (error) {
       toast.error('Make sure you removed all categories using this billboards first.')
     } finally {

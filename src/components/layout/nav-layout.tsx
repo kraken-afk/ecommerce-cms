@@ -10,11 +10,12 @@ type Props = HTMLAttributes<HTMLDivElement>
 export function NavLayout(props: Props) {
   const pathname = usePathname()
   const params = useParams()
+
   const routes = [
     {
       href: `/dashboard/${params.storeId}`,
       label: 'Overview',
-      active: pathname === `/${params.storeId}`
+      active: pathname === `/dashboard/${params.storeId}`
     },
     {
       href: `/dashboard/${params.storeId}/billboards`,
@@ -25,7 +26,12 @@ export function NavLayout(props: Props) {
       href: `/dashboard/${params.storeId}/settings`,
       label: 'Settings',
       active: pathname === `/dashboard/${params.storeId}/settings`
-    }
+    },
+    {
+      href: `/dashboard/${params.storeId}/categories`,
+      label: 'Categories',
+      active: pathname === `/dashboard/${params.storeId}/categories`
+    },
   ]
 
   return (

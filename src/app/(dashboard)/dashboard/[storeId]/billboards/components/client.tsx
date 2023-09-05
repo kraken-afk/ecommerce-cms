@@ -7,6 +7,7 @@ import { Separator } from '@/components/ui/separator'
 import { BillboardColumn, columns } from '@/app/(dashboard)/dashboard/[storeId]/billboards/components/columns'
 import { useParams, useRouter } from 'next/navigation'
 import { DataTable } from '@/components/ui/data-table'
+import { ApiList } from '@/components/ui/api-list'
 
 type Props = {
   data: BillboardColumn[]
@@ -29,6 +30,12 @@ export function BillboardClient({ data }: Props) {
       </div>
       <Separator />
       <DataTable columns={columns} data={data} searchKey='label' />
+      <Heading
+        title='API'
+        description='API calls for billboards'
+      />
+      <Separator />
+      <ApiList entityIdName='billboardId' entityName='billboards' />
     </>
   )
 }

@@ -63,32 +63,20 @@ export async function POST(
 export async function GET(
   req: NextRequest,
   { params: { storeId } }:
-    { params: { storeId: string, billboardId: string } }
+    { params: { storeId: string } }
 ) {
   try {
-    const { userId } = auth()
-
-    if (!userId)
-      return new NextResponse('Unauthenticanted', { status: 401 })
 
     if (!storeId)
       return new NextResponse('Store id is required', { status: 400 })
 
-    const storeByUserId = await prismadb.store.findFirst({
-      where: {
-        id: storeId,
-        userId
-      }
-    })
-
-    if (!storeByUserId)
-      return new NextResponse('Unauthorized', { status: 403 })
-
-    const billboards = prismadb.billboard.findMany({
+    const billboards = await prismadb.billboard.findMany({
       where: {
         storeId
       }
     })
+
+    console.log(billboards)
 
     return NextResponse.json(billboards)
   } catch (error) {

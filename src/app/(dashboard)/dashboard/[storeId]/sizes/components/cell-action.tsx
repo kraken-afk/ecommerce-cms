@@ -24,18 +24,18 @@ export function CellAction({ data }: Props) {
     toast.success('API route copied to clipboard')
   }
   const onUpdate = () => {
-    router.push(`/dashboard/${params.storeId}/billboards/${data.id}`)
+    router.push(`/dashboard/${params.storeId}/sizes/${data.id}`)
   }
   const onDelete = async () => {
     setLoading(true)
     toast.promise(
-      fetch(`/api/stores/${params?.storeId}/billboards/${data.id}`, {
+      fetch(`/api/stores/${params?.storeId}/sizes/${data.id}`, {
         method: 'DELETE',
       }),
       {
-        error: 'Make sure you removed all categories using this billboards first.',
-        loading: 'Deleting billboard..',
-        success: 'Billboard deleted.'
+        error: 'Make sure you removed all product using this size first.',
+        loading: 'Deleting size..',
+        success: 'size deleted.'
       }
     )
     setLoading(false)

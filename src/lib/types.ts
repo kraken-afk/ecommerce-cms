@@ -18,3 +18,10 @@ export const sizeSchema = z.object({
   name: z.string().min(1),
   value: z.string().min(1),
 })
+
+export const colorSchema = z.object({
+  name: z.string().min(1),
+  value: z.string().min(4).max(7).regex(/^#/, {
+    message: 'String must be a valid hexcode'
+  }),
+})

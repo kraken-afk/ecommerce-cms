@@ -11,7 +11,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Separator } from '@/components/ui/separator'
 import { Form, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import {sizeSchema } from '@/lib/types'
+import { colorSchema } from '@/lib/types'
 import { useParams, useRouter } from 'next/navigation'
 import { AlertModal } from '@/components/layout/alert-modal'
 import { ImageUpload } from '@/components/ui/image-upload'
@@ -21,33 +21,33 @@ type Props = {
   initialData: Size | null
 }
 
-type SizeFormValues = z.infer<typeof sizeSchema>
+type ColorFormValues = z.infer<typeof colorSchema>
 
-export function SizeForm({ initialData }: Props) {
+export function ColorForm({ initialData }: Props) {
   const [open, setOpen] = useState(false)
   const [loading, setLoading] = useState(false)
 
   const params = useParams()
   const router = useRouter()
-  const title = initialData ? 'Edit Size' : 'Create Size'
-  const description = initialData ? 'Edit a size' : 'Create a new Size'
-  const toastMessage = initialData ? 'Size Edited' : 'Size Created'
+  const title = initialData ? 'Edit Color' : 'Create Color'
+  const description = initialData ? 'Edit a Color' : 'Create a new Color'
+  const toastMessage = initialData ? 'Color Edited' : 'Color Created'
   const action = initialData ? 'Save changes' : 'Create'
 
-  const form = useForm<SizeFormValues
+  const form = useForm<ColorFormValues
   >({
-    resolver: zodResolver(sizeSchema),
+    resolver: zodResolver(colorSchema),
     defaultValues: initialData || {
       name: '',
       value: '',
     }
   })
-  const submitHandler = async (data: SizeFormValues) => {
+  const submitHandler = async (data: ColorFormValues) => {
     try {
       setLoading(true)
 
       if (initialData)
-        await fetch(`/api/stores/${params?.storeId}/sizes/${params.sizeId}`, {
+        await fetch(`/api/stores/${params?.storeId}/colors/${params.colorId}`, {
           method: 'PATCH',
           headers: {
             'Content-Type': 'application/json'
@@ -55,7 +55,7 @@ export function SizeForm({ initialData }: Props) {
           body: JSON.stringify(data)
         })
       else
-        await fetch(`/api/stores/${params?.storeId}/sizes`, {
+        await fetch(`/api/stores/${params?.storeId}/colors`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -66,7 +66,7 @@ export function SizeForm({ initialData }: Props) {
       toast.success(toastMessage)
       setTimeout(() => {
         router.refresh()
-        window.location.assign(`/dashboard/${params.storeId}/sizes`)
+        window.location.assign(`/dashboard/${params.storeId}/colors`)
       }, 1000)
     } catch (error) {
       toast.error('Something went error')
@@ -77,14 +77,14 @@ export function SizeForm({ initialData }: Props) {
   const onDelete = async () => {
     try {
       setLoading(true)
-      const res = await fetch(`/api/stores/${params?.storeId}/sizes/${params.sizeId}`, {
+      const res = await fetch(`/api/stores/${params?.storeId}/colors/${params.colorId}`, {
         method: 'DELETE',
       })
       console.log(res)
-      toast.success('Size deleted')
-      window.location.assign(`/dashboard/${params.storeId}/sizes`)
+      toast.success('Color deleted')
+      window.location.assign(`/dashboard/${params.storeId}/colors`)
     } catch (error) {
-      toast.error('Make sure you removed all product using this size first.')
+      toast.error('Make sure you removed all product using this color first.')
     } finally {
       setLoading(false)
     }
@@ -124,7 +124,7 @@ export function SizeForm({ initialData }: Props) {
               render={({ field }) =>
                 <FormItem>
                   <FormLabel>Name</FormLabel>
-                  <Input disabled={loading} placeholder='Size name...' {...field} />
+                  <Input disabled={loading} placeholder='Color name...' {...field} />
                   <FormMessage />
                 </FormItem>
               }
@@ -136,7 +136,10 @@ export function SizeForm({ initialData }: Props) {
               render={({ field }) =>
                 <FormItem>
                   <FormLabel>Value</FormLabel>
-                  <Input disabled={loading} placeholder='Size value...' {...field} />
+                  <div className='flex items-center gap-x-4'>
+                    <Input disabled={loading} placeholder='Color value...' {...field} />
+                    <div className='border p-4 rounded-full' style={{ backgroundColor: field.value }} />
+                  </div>
                   <FormMessage />
                 </FormItem>
               }

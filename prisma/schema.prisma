@@ -11,30 +11,41 @@ model Store {
   id         String       @id @default(uuid())
   name       String
   userId     String
-  billboards Billboard[]  @relation("StoreToBillboard")
-  categories Category[]   @relation("StoreToCategory")
   createdAt  DateTime     @default(now())
   updatedAt  DateTime     @updatedAt
+  billboards Billboard[]  @relation("StoreToBillboard")
+  categories Category[]   @relation("StoreToCategory")
+  sizes      Size[]      @relation("StoreToSize")
 }
 
 model Billboard {
   id          String    @id @default(uuid())
   storeId     String
-  store       Store     @relation("StoreToBillboard", fields: [storeId], references: [id])
   label       String
   imgUrl      String
-  categories  Category[]
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
+  categories  Category[]
+  store       Store     @relation("StoreToBillboard", fields: [storeId], references: [id])
 }
 
 model Category {
   id          String    @id @default(uuid())
   name        String
-  store       Store     @relation("StoreToCategory", fields: [storeId], references: [id])
   storeId     String
   billboardId String
-  billboard   Billboard @relation(fields: [billboardId], references: [id])
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
+  store       Store     @relation("StoreToCategory", fields: [storeId], references: [id])
+  billboard   Billboard @relation(fields: [billboardId], references: [id])
+}
+
+model Size {
+  id          String    @id @default(uuid())
+  storeId     String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  name        String
+  value       String
+  store       Store  @relation("StoreToSize", fields: [storeId], references: [id])
 }

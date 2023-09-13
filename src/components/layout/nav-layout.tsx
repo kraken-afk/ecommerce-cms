@@ -32,6 +32,11 @@ export function NavLayout(props: Props) {
       label: 'Categories',
       active: pathname === `/dashboard/${params.storeId}/categories`
     },
+    {
+      href: `/dashboard/${params.storeId}/sizes`,
+      label: 'Sizes',
+      active: pathname === `/dashboard/${params.storeId}/sizes`
+    },
   ]
 
   return (

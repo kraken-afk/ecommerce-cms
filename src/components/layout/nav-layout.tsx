@@ -23,11 +23,6 @@ export function NavLayout(props: Props) {
       active: pathname === `/dashboard/${params.storeId}/billboards`
     },
     {
-      href: `/dashboard/${params.storeId}/settings`,
-      label: 'Settings',
-      active: pathname === `/dashboard/${params.storeId}/settings`
-    },
-    {
       href: `/dashboard/${params.storeId}/categories`,
       label: 'Categories',
       active: pathname === `/dashboard/${params.storeId}/categories`
@@ -41,6 +36,21 @@ export function NavLayout(props: Props) {
       href: `/dashboard/${params.storeId}/colors`,
       label: 'Colors',
       active: pathname === `/dashboard/${params.storeId}/colors`
+    },
+    {
+      href: `/dashboard/${params.storeId}/products`,
+      label: 'Products',
+      active: pathname === `/dashboard/${params.storeId}/products`
+    },
+    {
+      href: `/dashboard/${params.storeId}/orders`,
+      label: 'Orders',
+      active: pathname === `/dashboard/${params.storeId}/orders`
+    },
+    {
+      href: `/dashboard/${params.storeId}/settings`,
+      label: 'Settings',
+      active: pathname === `/dashboard/${params.storeId}/settings`
     },
   ]
 

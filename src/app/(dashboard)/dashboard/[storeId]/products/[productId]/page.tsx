@@ -11,10 +11,12 @@ export default async function Page({ params }: { params: { productId: string, st
     }
   })
 
-  // @ts-ignore
-  product.images = product['Image']
-  // @ts-ignore
-  delete product['Image']
+  if (product?.Image) {
+    // @ts-ignore
+    product.images = product?.Image
+    // @ts-ignore
+    delete product['Image']
+  }
 
   const categories = await prismadb.category.findMany({
     where: {

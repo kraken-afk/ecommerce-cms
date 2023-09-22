@@ -96,7 +96,6 @@ export function ProductForm({ initialData, categories, colors, sizes }: Props) {
       const res = await fetch(`/api/stores/${params?.storeId}/products/${params.productId}`, {
         method: 'DELETE',
       })
-      console.log(res)
       toast.success('Product deleted')
       window.location.assign(`/dashboard/${params.storeId}/products`)
     } catch (error) {

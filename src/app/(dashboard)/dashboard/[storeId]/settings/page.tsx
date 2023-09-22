@@ -2,6 +2,8 @@ import { SettingForm } from '@/app/(dashboard)/dashboard/[storeId]/settings/comp
 import { NotFound } from '@/components/exceptions/not-found'
 import { auth } from '@clerk/nextjs'
 import { redirect } from 'next/navigation'
+import { Separator } from '@/components/ui/separator'
+import { StoreApi } from '@/app/(dashboard)/dashboard/[storeId]/settings/components/store-api'
 import prismadb from '@/lib/prismadb'
 
 type Props = {
@@ -26,6 +28,10 @@ export default async function Page({ params }: Props) {
       <div className='flex-1 space-y-4 p-8 pt-6'>
         <SettingForm initialData={store} />
       </div>
+      <Separator />
+      <StoreApi
+        storeId={store.id}
+      />
     </div>
   )
 }

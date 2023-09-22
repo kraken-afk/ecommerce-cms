@@ -28,7 +28,7 @@ export function ImageUpload({ onChange, onRemove, value, disabled }: Props) {
 
   return (
     <div>
-      <div className='mb-4 flex-4 items-center gap-4'>
+      <div className='mb-4 flex flex-4 items-center gap-4'>
         {
           value.map((url) =>
             <div key={url} className='relative w-[200px] h-[200px] rounded-md overflow-hidden'>
@@ -38,7 +38,7 @@ export function ImageUpload({ onChange, onRemove, value, disabled }: Props) {
                   onClick={() => onRemove(url)}
                   variant={'destructive'}
                   size={'icon'}
-                  >
+                >
                   <Trash className='h-4 w-4' />
                 </Button>
               </div>
